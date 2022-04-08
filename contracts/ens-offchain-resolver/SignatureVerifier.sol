@@ -58,7 +58,7 @@ library SignatureVerifier {
         address signer = ECDSA.recover(sigHash, sig);
         require(
             expires >= block.timestamp,
-            "SignatureVerifier: Signature expired"
+            "SignatureVerifier::verify: Signature expired"
         );
         return (signer, result);
     }

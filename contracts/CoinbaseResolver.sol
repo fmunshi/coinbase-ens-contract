@@ -175,7 +175,10 @@ contract CoinbaseResolver is ERC165, Manageable, IExtendedResolver {
             extraData,
             response
         );
-        require(_signers.contains(signer), "invalid signature");
+        require(
+            _signers.contains(signer),
+            "CoinbaseResolver::resolveWithProof: invalid signature"
+        );
         return result;
     }
 
