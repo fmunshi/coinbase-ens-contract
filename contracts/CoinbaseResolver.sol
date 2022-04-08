@@ -83,7 +83,7 @@ contract CoinbaseResolver is ERC165, Manageable, IExtendedResolver {
      * @param newUrl New gateway URL
      */
 
-    function setUrl(string memory newUrl) external onlyGatewayManager {
+    function setUrl(string calldata newUrl) external onlyGatewayManager {
         _setUrl(newUrl);
     }
 
@@ -92,7 +92,7 @@ contract CoinbaseResolver is ERC165, Manageable, IExtendedResolver {
      * @dev Can only be called by the signer manager.
      * @param signersToAdd Signer addresses
      */
-    function addSigners(address[] memory signersToAdd)
+    function addSigners(address[] calldata signersToAdd)
         external
         onlySignerManager
     {
@@ -104,11 +104,12 @@ contract CoinbaseResolver is ERC165, Manageable, IExtendedResolver {
      * @dev Can only be called by the owner.
      * @param signersToRemove Signer addresses
      */
-    function removeSigners(address[] memory signersToRemove)
+    function removeSigners(address[] calldata signersToRemove)
         external
         onlySignerManager
     {
-        for (uint256 i = 0; i < signersToRemove.length; i++) {
+        uint256 length = signersToRemove.length;
+        for (uint256 i = 0; i < length; i++) {
             _signers.remove(signersToRemove[i]);
         }
         emit SignersRemoved(signersToRemove);
@@ -188,8 +189,8 @@ contract CoinbaseResolver is ERC165, Manageable, IExtendedResolver {
      */
     function makeSignatureHash(
         uint64 expires,
-        bytes memory request,
-        bytes memory result
+        bytes calldata request,
+        bytes calldata result
     ) external view returns (bytes32) {
         return
             SignatureVerifier.makeSignatureHash(
@@ -206,7 +207,8 @@ contract CoinbaseResolver is ERC165, Manageable, IExtendedResolver {
     }
 
     function _addSigners(address[] memory signersToAdd) private {
-        for (uint256 i = 0; i < signersToAdd.length; i++) {
+        uint256 length = signersToAdd.length;
+        for (uint256 i = 0; i < length; i++) {
             _signers.add(signersToAdd[i]);
         }
         emit SignersAdded(signersToAdd);
