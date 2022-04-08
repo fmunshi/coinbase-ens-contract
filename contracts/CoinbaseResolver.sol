@@ -20,7 +20,7 @@ contract CoinbaseResolver is ERC165, Manageable, IExtendedResolver {
     string private _url;
     EnumerableSet.AddressSet private _signers;
 
-    event UrlSet(string indexed newUrl);
+    event UrlSet(string indexed previousUrl, string indexed newUrl);
     event SignersAdded(address[] indexed addedSigners);
     event SignersRemoved(address[] indexed removedSigners);
     error OffchainLookup(
@@ -201,8 +201,9 @@ contract CoinbaseResolver is ERC165, Manageable, IExtendedResolver {
     }
 
     function _setUrl(string memory newUrl) private {
+        string memory previousUrl = _url;
         _url = newUrl;
-        emit UrlSet(newUrl);
+        emit UrlSet(previousUrl, newUrl);
     }
 
     function _addSigners(address[] memory signersToAdd) private {
